@@ -1,0 +1,26 @@
+name: Receive PR
+
+# This workflow runs on pull requests from contributors
+# It has no access to secrets for security reasons
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  receive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Save PR number
+        run: |
+          mkdir -p ./pr
+          echo ${{ github.event.number }} > ./pr/NR
+          echo "PR number: ${{ github.event.number }}"
+          
+      - name: Upload PR info as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr
+          path: pr/
