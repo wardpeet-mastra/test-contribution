@@ -9,6 +9,9 @@ on:
 jobs:
   receive:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,6 +22,22 @@ jobs:
           echo ${{ github.event.number }} > ./pr/NR
           echo "PR number: ${{ github.event.number }}"
           
+      - name: "Create initial comment"
+        id: create-comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comment = await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.number }},
+              body: '🔄 Running tests in the background... Please wait while we check the repository configuration.'
+            });
+            
+            // Store comment ID for later updates
+            core.setOutput('comment-id', comment.data.id);
+
       - name: Upload PR info as artifact
         uses: actions/upload-artifact@v4
         with:
