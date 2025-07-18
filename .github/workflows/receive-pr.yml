@@ -40,7 +40,7 @@ jobs:
               comment.body.includes('Running tests in the background')
             );
 
-            const body = 'Running tests in tne background, please wait for confirmation:\n- 🔄 Checking secrets <!-- check-secrets -->\n- 🔄 Investigate secrets <!-- check-secrets-copy -->';
+            const body = 'Running tests in the background, please wait for confirmation:\n- 🔄 Checking secrets <!-- check-secrets -->\n- 🔄 Investigate secrets <!-- check-secrets-copy -->';
 
             if (botComment) {
               // Update existing comment
