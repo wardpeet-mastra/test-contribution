@@ -28,6 +28,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            console.log(`Creating pending statuses for SHA: ${context.sha}`);
             // Create pending statuses for all checks
             const statuses = [
               {
@@ -46,11 +47,12 @@ jobs:
                 repo: context.repo.repo,
                 sha: context.sha,
                 state: 'pending',
-                target_url: null,
+                target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${{ github.run_id }}`,
                 description: status.description,
                 context: status.context
               });
             }
+
 
       - name: Upload PR info as artifact
         uses: actions/upload-artifact@v4
