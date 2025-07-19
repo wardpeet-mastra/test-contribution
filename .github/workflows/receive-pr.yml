@@ -37,10 +37,6 @@ jobs:
               {
                 context: 'secrets-investigation', 
                 description: 'Secret investigation is running...'
-              },
-              {
-                context: 'direct-secrets-check',
-                description: 'Direct secret check is running...'
               }
             ];
 
@@ -50,7 +46,7 @@ jobs:
                 repo: context.repo.repo,
                 sha: context.sha,
                 state: 'pending',
-                target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${{ github.run_id }}`,
+                target_url: null,
                 description: status.description,
                 context: status.context
               });
