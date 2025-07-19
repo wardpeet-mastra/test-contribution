@@ -24,7 +24,7 @@ jobs:
           script: |
             console.log(JSON.stringify(context.payload, null, 2));
             const prSha = context.payload.pull_request.head.sha;
-            console.log(`Creating pending statuses for SHA: ${github.event.pull_request.head.sha}`);
+            console.log(`Creating pending statuses for SHA: ${prSha}`);
             // Create pending statuses for all checks
             const statuses = [
               {
