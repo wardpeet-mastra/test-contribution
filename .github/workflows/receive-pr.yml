@@ -22,7 +22,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prSha = '${{ github.event.workflow_run.head_sha }}'
+            const prSha = '${{ github.event.pull_request.head_sha }}'
             console.log(`Creating pending statuses for SHA: ${github.event.pull_request.head.sha}`);
             // Create pending statuses for all checks
             const statuses = [
