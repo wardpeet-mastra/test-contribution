@@ -17,17 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Save PR number
-        run: |
-          mkdir -p ./pr
-          echo ${{ github.event.number }} > ./pr/NR
-          echo "PR number: ${{ github.event.number }}"
-
       - name: "Create initial pending statuses"
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const prSha = '${{ github.event.workflow_run.head_sha }}'
             console.log(`Creating pending statuses for SHA: ${github.event.pull_request.head.sha}`);
             // Create pending statuses for all checks
             const statuses = [
@@ -45,16 +40,10 @@ jobs:
               await github.rest.repos.createCommitStatus({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                sha: github.event.pull_request.head.sha,
+                sha: prSha,
                 state: 'pending',
                 target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${{ github.run_id }}`,
                 description: status.description,
                 context: status.context
               });
             }
-
-      - name: Upload PR info as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: pr
-          path: pr/
